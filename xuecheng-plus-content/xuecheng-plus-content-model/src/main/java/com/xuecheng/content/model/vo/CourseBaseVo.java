@@ -1,28 +1,25 @@
-package com.xuecheng.model.po;
+package com.xuecheng.content.model.vo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.xuecheng.content.model.po.CourseBase;
+import com.xuecheng.utils.CommonBeanUtils;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 课程基本信息
- * </p>
- *
- * @author itcast
- */
+ * @program: xuecheng-plus
+ * @ClassName CourseBaseVo
+ * @description:
+ * @author: liujl
+ * @create: 2023-02-17 21:42
+ * @Version 1.0
+ **/
 @Data
-@TableName("course_base")
-public class CourseBase implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CourseBaseVo {
 
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -83,13 +80,11 @@ public class CourseBase implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
 
     /**
      * 修改时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime changeDate;
 
     /**
@@ -112,5 +107,9 @@ public class CourseBase implements Serializable {
      */
     private String status;
 
-
+    public CourseBaseVo buildCourseBaseVo(CourseBase courseBase){
+        CourseBaseVo courseBaseVo = new CourseBaseVo();
+        CommonBeanUtils.copyProperties(courseBase, courseBaseVo);
+        return courseBaseVo;
+    }
 }

@@ -2,10 +2,12 @@ package com.xuecheng.content.api;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
-import com.xuecheng.model.dto.QueryCourseParamsDto;
-import com.xuecheng.model.vo.CourseBaseVo;
+import com.xuecheng.content.model.dto.QueryCourseParamsDto;
+import com.xuecheng.content.model.vo.CourseBaseVo;
+import com.xuecheng.content.service.CourseBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CourseBaseInfoController {
 
+    @Autowired
+    CourseBaseService courseBaseService;
+
     @ApiOperation("课程查询接口")
     @PostMapping("/course/list")
     public PageResult<CourseBaseVo> list(@RequestBody QueryCourseParamsDto queryCourseParamsDto, PageParams pageParams) {
-
-        return null;
+        return courseBaseService.queryCourseBaseList(queryCourseParamsDto, pageParams);
     }
 
 }

@@ -76,7 +76,7 @@ public abstract  class CommonBeanUtils extends org.springframework.beans.BeanUti
      * @return
      */
     public static <T> List<T> copyListProperties(List<? extends Object> sources, final Class<T> voClass) {
-        Assert.isTrue(!CollectionUtils.isEmpty(sources), "Source must not be null");
+        Assert.notNull(sources, "Source must not be null");
         List<T> targets = new ArrayList<>();
         sources.forEach(source -> {
             try {
