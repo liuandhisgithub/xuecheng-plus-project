@@ -38,7 +38,10 @@ public class CourseBaseInfoController {
     @ApiOperation("新增课程基础信息")
     @PostMapping("/course")
     public CourseInfoVo createCourseBase(@RequestBody CourseInfoDto courseInfoDto){
-        return null;
+
+        // TODO 获取培训机构的id
+        Long companyId = 1l;
+        return courseBaseService.createCourseBase(companyId,courseInfoDto);
     }
 
 }

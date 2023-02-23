@@ -16,7 +16,7 @@ import java.util.List;
 public interface CourseCategoryService {
 
     /**
-     *
+     * 查询课程分类信息，树状结构返回
      * @param rootId
      * @return
      */
