@@ -108,8 +108,6 @@ public class CourseBaseVo {
     private String status;
 
     public CourseBaseVo buildCourseBaseVo(CourseBase courseBase){
-        CourseBaseVo courseBaseVo = new CourseBaseVo();
-        CommonBeanUtils.copyProperties(courseBase, courseBaseVo);
-        return courseBaseVo;
+        return CommonBeanUtils.copyProperties(courseBase, CourseBaseVo.class);
     }
 }
