@@ -8,6 +8,7 @@ import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.CourseCategoryMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
+import com.xuecheng.content.model.dto.CourseEditDto;
 import com.xuecheng.content.model.dto.CourseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
@@ -16,6 +17,7 @@ import com.xuecheng.content.model.po.CourseMarket;
 import com.xuecheng.content.model.vo.CourseBaseVo;
 import com.xuecheng.content.model.vo.CourseInfoVo;
 import com.xuecheng.content.service.CourseBaseService;
+import com.xuecheng.content.service.CourseMarketService;
 import com.xuecheng.utils.CommonBeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +45,9 @@ public class CourseBaseServiceImpl implements CourseBaseService {
 
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+
+    @Autowired
+    CourseMarketService courseMarketService;
 
     @Override
     public PageResult<CourseBaseVo> queryCourseBaseList(QueryCourseParamsDto queryCourseParamsDto, PageParams pageParams) {
@@ -110,7 +115,8 @@ public class CourseBaseServiceImpl implements CourseBaseService {
         return getCourseBaseInfo(courseId);
     }
 
-    private CourseInfoVo getCourseBaseInfo(Long courseId) {
+    @Override
+    public CourseInfoVo getCourseBaseInfo(Long courseId) {
 
         // 获取数据库数据
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
@@ -136,5 +142,30 @@ public class CourseBaseServiceImpl implements CourseBaseService {
             courseInfoVo.setMtName(mtCourseCategory.getName());
         }
         return courseInfoVo;
+    }
+
+    @Transactional
+    @Override
+    public CourseInfoVo modifyCourseInfo(Long companyId, CourseEditDto courseEditDto) {
+        // 参数校验
+        Long courseId = courseEditDto.getId();
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if(courseBase == null){
+            XueChengPlusException.cast("课程不存在");
+        }
+        if(companyId != courseBase.getCompanyId()){
+            XueChengPlusException.cast("机构id错误");
+        }
+        // 构建pojo
+        BeanUtils.copyProperties(courseEditDto,courseBase);
+        int courseBaseUpdate = courseBaseMapper.updateById(courseBase);
+
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(courseEditDto,courseMarket);
+        boolean courseMarktUpdate= courseMarketService.saveOrUpdate(courseMarket);
+        if(!courseMarktUpdate || courseBaseUpdate <=0){
+            XueChengPlusException.cast("更新失败");
+        }
+        return getCourseBaseInfo(courseId);
     }
 }
