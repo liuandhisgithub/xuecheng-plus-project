@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 @ApiModel(value="CourseInfoDto", description="新增课程基本信息")
 public class CourseInfoDto {
 
+    // notEmpty 是spring-boot实现的 jsr303规范，可以在controller中使用Validated注解启动校验
+    // 多接口使用同一个dto类且校验规则不同时，可以使用groups参数配置不同的类使用不同的校验规则
     @NotEmpty(message = "课程名称不能为空")
     @ApiModelProperty(value = "课程名称", required = true)
     private String name;

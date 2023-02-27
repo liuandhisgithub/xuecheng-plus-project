@@ -2,6 +2,7 @@ package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xuecheng.base.execption.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
@@ -69,35 +70,6 @@ public class CourseBaseServiceImpl implements CourseBaseService {
     @Override
     public CourseInfoVo createCourseBase(Long companyId, CourseInfoDto courseInfoDto) {
 
-        // 参数合法性校验
-        if (StringUtils.isBlank(courseInfoDto.getName())) {
-            throw new RuntimeException("课程名称为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getMt())) {
-            throw new RuntimeException("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getSt())) {
-            throw new RuntimeException("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getGrade())) {
-            throw new RuntimeException("课程等级为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getTeachmode())) {
-            throw new RuntimeException("教育模式为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getUsers())) {
-            throw new RuntimeException("适应人群为空");
-        }
-
-        if (StringUtils.isBlank(courseInfoDto.getCharge())) {
-            throw new RuntimeException("收费规则为空");
-        }
-
         // 课程基本信息表数据对象
         CourseBase courseBase = new CourseBase();
         // 赋值
@@ -125,7 +97,7 @@ public class CourseBaseServiceImpl implements CourseBaseService {
             Float price = courseInfoDto.getPrice();
             // Float 实现了 Comparable 接口，可以直接比较
             if (price == null || price <= 0) {
-                throw new RuntimeException("课程设置了收费价格不能为空且必须大于0");
+                XueChengPlusException.cast("课程设置了收费价格不能为空且必须大于0");
             }
         }
 
